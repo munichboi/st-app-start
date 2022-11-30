@@ -54,6 +54,7 @@ if selectfile == "natural2021":
     fig = sns.displot(data=df, x="ประเภทแหล่งธรรมชาติ", hue="ระดับความสำคัญ")
     st.pyplot(fig)
 
+
     sns.set_theme(style="darkgrid")
 
     fig = sns.lineplot(x="ประเภทแหล่งธรรมชาติ", y="จังหวัด",
