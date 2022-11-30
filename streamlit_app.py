@@ -1,15 +1,16 @@
 import streamlit as st
 import seaborn as sns
 import pandas as pd
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+
 FILES = {
-    'Student Performance': "StudentsPerformance.csv",
-    "Building Data": "buildingdata.csv",
-    "ENB2012": "ENB2012_data.xlsx"
+    "natural2021": "natural2021.csv"
+
 }
 
-st.write("Web App นี้เป็นส่วนหนึ่งของวิชา AR686 คณะสถาปัตยกรรมศาสตร์มหาวิทยาลัยธรรมศาสตร์")
+st.write("Pakapol Chuleewan 6516030142")
 with st.sidebar:
     selectfile = st.radio(
         "Choose a CSV file",
@@ -26,26 +27,8 @@ else:
     df = pd.read_csv(selectedfile)
 st.dataframe(df)
 
-if selectfile == "Student Performance":
-    st.title("แสดงค่าเฉลี่ยของคะแนนทั้ง 3 วิชา")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.subheader("เลข")
-        fig, ax = plt.subplots()
-        ax.hist(df['math score'], bins=20)
-        st.pyplot(fig)
-    with col2:
-        st.subheader("อ่าน")
-        fig, ax = plt.subplots()
-        ax.hist(df['reading score'], bins=20)
-        st.pyplot(fig)
-    with col3:
-        st.subheader("เขียน")
-        fig, ax = plt.subplots()
-        ax.hist(df['writing score'], bins=20)
-        st.pyplot(fig)
+if selectfile == "natural2021":
+    st.title("แหล่งธรรมชาติของประเทศไทย")
     
     st.header("แสดงข้อมูลจำนวนตามการแบ่งกลุ่ม")
     option = st.selectbox('เลือกชื่อ Column', df.columns)
@@ -54,21 +37,27 @@ if selectfile == "Student Performance":
     sns.countplot(x=df[option])
     st.pyplot(fig)
 
-    st.header("แสดงความสัมพันธ์ของคะแนน")
+    st.header("แสดงความสัมพันธ์ของแหล่งธรรมชาติ")
     option_x = st.radio(
     'เลือกแกน X',
-    ["math score", "reading score", "writing score"])
+    ["ประเภทแหล่งธรรมชาติ", "จังหวัด", "ภาค"])
     option_y = st.radio(
     'เลือกแกน Y',
-    ["math score", "reading score", "writing score"])
+    ["ประเภทแหล่งธรรมชาติ", "จังหวัด", "ภาค"])
 
     fig, ax = plt.subplots(figsize=(10,5))
     sns.scatterplot(x=option_x, y=option_y,
                     linewidth=0,
-                    data=df, hue="gender")
+                    data=df, hue="ระดับความสำคัญ")
     st.pyplot(fig)
 
-    fig = sns.displot(data=df, x="reading score", hue="gender")
+    fig = sns.displot(data=df, x="ประเภทแหล่งธรรมชาติ", hue="ระดับความสำคัญ")
     st.pyplot(fig)
+
+    sns.set_theme(style="darkgrid")
+
+    fig = sns.lineplot(x="ประเภทแหล่งธรรมชาติ", y="จังหวัด",
+             hue="ภาค", style="ระดับความสำคัญ",
+             data=df)
 else:
     pass
